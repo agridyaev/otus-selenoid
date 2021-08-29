@@ -80,6 +80,10 @@ def driver(request):
     wd.check_element_presence = check_element_presence
 
     def fin():
+        with open('allure-results/environment.properties', 'w') as f:
+            f.write(f'Browser={browser}\n')
+            f.write(f'Browser.Version={version}\n')
+            f.write(f'Executor={executor}')
         wd.quit()
 
     request.addfinalizer(fin)
