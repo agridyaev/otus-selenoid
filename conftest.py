@@ -62,7 +62,16 @@ def driver(request):
 
     @allure.step("Check page title contains {target}")
     def check_in_title(target):
-        assert target in wd.title
+        title = wd.title
+        try:
+            assert target in title
+        except AssertionError:
+            allure.attach(
+                name=driver.session_id,
+                body=driver.get_screenshot_as_png(),
+                attachment_type=allure.attachment_type.PNG
+            )
+            raise AssertionError(f"Page has '{title}' text in title!")
 
     @allure.step("Verify element {css_selector} on page.")
     def check_element_presence(driver, css_selector):
