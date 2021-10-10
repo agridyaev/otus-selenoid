@@ -74,13 +74,13 @@ def driver(request):
             raise AssertionError(f"Page has '{title}' text in title!")
 
     @allure.step("Verify element {css_selector} on page.")
-    def check_element_presence(driver, css_selector):
+    def check_element_presence(css_selector):
         try:
-            driver.find_element_by_css_selector(css_selector)
+            wd.find_element_by_css_selector(css_selector)
         except common.exceptions.NoSuchElementException:
             allure.attach(
-                name=driver.session_id,
-                body=driver.get_screenshot_as_png(),
+                name=wd.session_id,
+                body=wd.get_screenshot_as_png(),
                 attachment_type=allure.attachment_type.PNG
             )
             raise AssertionError(f"Element {css_selector} not found on page!")
