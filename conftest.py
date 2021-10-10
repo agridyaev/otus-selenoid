@@ -67,8 +67,8 @@ def driver(request):
             assert target in title
         except AssertionError:
             allure.attach(
-                name=driver.session_id,
-                body=driver.get_screenshot_as_png(),
+                name=wd.session_id,
+                body=wd.get_screenshot_as_png(),
                 attachment_type=allure.attachment_type.PNG
             )
             raise AssertionError(f"Page has '{title}' text in title!")
