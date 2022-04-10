@@ -14,6 +14,21 @@ def pytest_addoption(parser):
     parser.addoption("--mobile", action="store_true")
 
 
+@pytest.fixture(scope="session", autouse=True)
+def get_environment(pytestconfig, request):
+    props = {
+        'Browser': request.config.getoption("--browser"),
+        'Browser.Version': request.config.getoption("--bversion"),
+        'Executor': request.config.getoption("--executor"),
+        'Stand': 'RC',
+    }
+
+    tests_root = pytestconfig.rootdir
+    with open(f'{tests_root}/allure-results/environment.properties', 'w') as f:
+        env_props = '\n'.join([f'{k}={v}' for k, v in props.items()])
+        f.write(env_props)
+
+
 @pytest.fixture
 def driver(request):
     browser = request.config.getoption("--browser")
@@ -89,10 +104,6 @@ def driver(request):
     wd.check_element_presence = check_element_presence
 
     def fin():
-        with open('allure-results/environment.properties', 'w') as f:
-            f.write(f'Browser={browser}\n')
-            f.write(f'Browser.Version={version}\n')
-            f.write(f'Executor={executor}')
         wd.quit()
 
     request.addfinalizer(fin)
