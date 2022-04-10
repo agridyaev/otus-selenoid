@@ -1,7 +1,11 @@
+import os
 import pytest
 import allure
 
 from selenium import webdriver, common
+
+
+DRIVERS = os.environ['DRIVERS']
 
 
 def pytest_addoption(parser):
@@ -45,7 +49,9 @@ def driver(request):
         if mobile:
             caps["goog:chromeOptions"]["mobileEmulation"] = {"deviceName": "iPhone 5/SE"}
 
-        wd = webdriver.Chrome(desired_capabilities=caps)
+        wd = webdriver.Chrome(
+            executable_path=f"{DRIVERS}/chromedriver", desired_capabilities=caps
+        )
 
     else:
         executor_url = f"http://{executor}:4444/wd/hub"
