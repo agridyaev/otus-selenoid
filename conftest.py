@@ -5,7 +5,7 @@ import allure
 from selenium import webdriver, common
 
 
-DRIVERS = os.environ['DRIVERS']
+DRIVERS = os.getenv('DRIVERS')
 
 
 def pytest_addoption(parser):
