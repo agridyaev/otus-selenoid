@@ -14,5 +14,4 @@ def test_google(driver):
 def test_yandex(driver):
     driver.get("https://ya.ru")
     driver.check_element_presence("#text")
-    driver.check_element_presence("a[title='Яндекс']")
     driver.check_in_title("Яндекс")
